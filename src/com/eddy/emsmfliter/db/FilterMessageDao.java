@@ -4,11 +4,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-public class FilterMessageService {
+public class FilterMessageDao {
 	
 	private DatabaseHelper dbhelper;
 
-	public FilterMessageService(Context context) {
+	public FilterMessageDao(Context context) {
 		dbhelper = new DatabaseHelper(context);
 	}
 	
@@ -30,8 +30,9 @@ public class FilterMessageService {
 		}
 	}
 	
-	public void deleteById() {
-		
+	public void deleteById(int id) {
+		SQLiteDatabase db = dbhelper.getWritableDatabase(); 
+		db.execSQL("delete from " + MessageDBInfo.tableName + " where " + MessageDBInfo.column_name_id  + "=?;", new Object[] {id});
 	}
 	
 	public void insert(FilterMessageEty ety) {

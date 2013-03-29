@@ -19,11 +19,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				+ MessageDBInfo.column_name_receiveTime + " INTEGER "
 				+ ");"
 		);
+		
+		db.execSQL("create table " + FliterDBInfo.tableName + " ("
+				+ FliterDBInfo.column_name_id + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+				+ FliterDBInfo.column_name_number + " TEXT,"
+				+ FliterDBInfo.column_name_filterInfo + " TEXT"
+				+ ");"
+		);
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		db.execSQL("drop table if exists " + MessageDBInfo.tableName);
+		db.execSQL("drop table if exists " + FliterDBInfo.tableName);
 	}
 
 }
