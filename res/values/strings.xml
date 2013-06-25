@@ -11,7 +11,7 @@
     <string name="confirm_ok">确认</string>
     <string name="confirm_cancel">取消</string>
     
-    <string name="dialog_number">电话号码</string>
+    <string name="dialog_type">类型</string>
     <string name="dialog_fliterinfo">规则</string>
     <string name="menu_delete">删除</string>
     <string name="delete_confirm_title">提示</string>

@@ -33,10 +33,10 @@ public final class R {
         public static final int add_fliter=0x7f080008;
         public static final int delete_fliter=0x7f08000b;
         public static final int dialog_fliterinfo=0x7f080002;
-        public static final int dialog_number=0x7f080001;
+        public static final int dialog_flitertype=0x7f080001;
         public static final int filteredMsmList=0x7f080000;
         public static final int fliter_info=0x7f080004;
-        public static final int fliter_number=0x7f080003;
+        public static final int fliter_type=0x7f080003;
         public static final int messageBody=0x7f080007;
         public static final int number=0x7f080005;
         public static final int receiveTime=0x7f080006;
@@ -61,7 +61,7 @@ public final class R {
         public static final int delete_confirm_msg=0x7f05000c;
         public static final int delete_confirm_title=0x7f05000b;
         public static final int dialog_fliterinfo=0x7f050009;
-        public static final int dialog_number=0x7f050008;
+        public static final int dialog_type=0x7f050008;
         public static final int hello_world=0x7f050003;
         public static final int menu_delete=0x7f05000a;
         public static final int title_activity_fliter_setting=0x7f050004;

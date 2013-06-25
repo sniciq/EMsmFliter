@@ -119,7 +119,7 @@ public class MainActivity extends Activity {
 		AdapterView.AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
 		Cursor cursor = (Cursor) filteredMsmList.getAdapter().getItem(info.position);
 		final int id = cursor.getInt(cursor.getColumnIndex(FliterDBInfo.column_name_id));
-		final int title = cursor.getInt(cursor.getColumnIndex(FliterDBInfo.column_name_number));
+		final int title = cursor.getInt(cursor.getColumnIndex(FliterDBInfo.column_name_type));
 		
 		switch (item.getItemId()) {
 			case R.id.delete_fliter:

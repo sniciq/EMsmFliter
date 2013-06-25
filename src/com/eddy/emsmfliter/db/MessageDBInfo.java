@@ -1,5 +1,9 @@
 package com.eddy.emsmfliter.db;
 
+/**
+ * 过滤到的短信对象
+ *
+ */
 public class MessageDBInfo {
 	public static final String dbName = "emsmfilter.db";
 	public static final String tableName = "emsmfilter";

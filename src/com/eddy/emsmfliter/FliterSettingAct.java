@@ -17,8 +17,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.eddy.emsmfliter.db.FliterDBInfo;
 import com.eddy.emsmfliter.db.FliterDao;
@@ -28,6 +31,7 @@ public class FliterSettingAct extends ListActivity {
 
 	private SimpleCursorAdapter filterAdapter;
 	private FliterDao fliterDao;
+	private ArrayAdapter<String> spinner_type_adapter;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +42,20 @@ public class FliterSettingAct extends ListActivity {
 		Cursor c = fliterDao.getAllCursor();
 		filterAdapter = new SimpleCursorAdapter(this, R.layout.fliterlist_item, 
 				c, 
-				new String[] { FliterDBInfo.column_name_number, FliterDBInfo.column_name_filterInfo}, 
-				new int[] { R.id.fliter_number, R.id.fliter_info}, 
-				SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER); 
+				new String[] { FliterDBInfo.column_name_type, FliterDBInfo.column_name_filterInfo}, 
+				new int[] { R.id.fliter_type, R.id.fliter_info}, 
+				SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER) {
+			@Override
+			public void setViewText(TextView v, String text) {
+				if(v.getId() == R.id.fliter_type) {
+					text = FliterEty.convertType(Integer.parseInt(text));
+				}
+				super.setViewText(v, text);
+			}
+		}; 
 		setListAdapter(filterAdapter);
+		
+		spinner_type_adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, FliterEty.Type_Array);
 	}
 	
 	@Override
@@ -57,15 +71,20 @@ public class FliterSettingAct extends ListActivity {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle(getResources().getString(R.string.title_addfliter));
 			LayoutInflater lif = LayoutInflater.from(this);
-			final View view = lif.inflate(R.layout.fliter_dialog, null);
-			builder.setView(view);
+			final View dialogView = lif.inflate(R.layout.fliter_dialog, null);
+			Spinner spinner = (Spinner) dialogView.findViewById(R.id.dialog_flitertype);
+			spinner.setAdapter(spinner_type_adapter);
+			builder.setView(dialogView);
 			builder.setPositiveButton(getResources().getString(R.string.confirm_ok), new OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
-					EditText numTxt = (EditText) view.findViewById(R.id.dialog_number);
-					EditText intxt =  (EditText) view.findViewById(R.id.dialog_fliterinfo);
+					EditText intxt =  (EditText) dialogView.findViewById(R.id.dialog_fliterinfo);
+					Spinner spinner = (Spinner) dialogView.findViewById(R.id.dialog_flitertype);
+					
 					FliterEty ety = new FliterEty();
-					ety.setNumber(numTxt.getText().toString());
+					String typeStr = spinner.getSelectedItem().toString();
+					ety.setType(FliterEty.convertTypeStr(typeStr));
+					
 					ety.setFilterInfo(intxt.getText().toString());
 					fliterDao.insert(ety);
 					filterAdapter.changeCursor(fliterDao.getAllCursor());
@@ -91,9 +110,8 @@ public class FliterSettingAct extends ListActivity {
 		AdapterView.AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
 		MenuInflater menuInflater = getMenuInflater();
 		menuInflater.inflate(R.menu.options_fliter, menu);
-		
 		Cursor cursor = (Cursor) getListAdapter().getItem(info.position);
-		menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(FliterDBInfo.column_name_number)));
+		menu.setHeaderTitle(cursor.getString(cursor.getColumnIndex(FliterDBInfo.column_name_filterInfo)));
 		Intent intent = new Intent();
 		intent.addCategory(Intent.CATEGORY_ALTERNATIVE);
 		menu.addIntentOptions(Menu.CATEGORY_ALTERNATIVE, 0, 0, new ComponentName(this, FliterSettingAct.class), null, intent, 0, null);		

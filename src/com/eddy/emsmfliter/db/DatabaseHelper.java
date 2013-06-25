@@ -22,7 +22,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		
 		db.execSQL("create table " + FliterDBInfo.tableName + " ("
 				+ FliterDBInfo.column_name_id + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-				+ FliterDBInfo.column_name_number + " TEXT,"
+				+ FliterDBInfo.column_name_type + " INTEGER ,"
 				+ FliterDBInfo.column_name_filterInfo + " TEXT"
 				+ ");"
 		);

@@ -23,7 +23,7 @@ public class EMsmFliterService extends Service {
 		filter.setPriority(100);
 		filter.addAction("android.provider.Telephony.SMS_RECEIVED");
 		registerReceiver(emsmReceiver, filter);
-		Toast.makeText(getApplicationContext(), "短信过滤已经启动", Toast.LENGTH_LONG).show();
+		Toast.makeText(getApplicationContext(), "鐭俊鎷︽埅宸茬粡鍚姩", Toast.LENGTH_LONG).show();
 	}
 
 	@Override

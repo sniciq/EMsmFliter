@@ -19,7 +19,7 @@ public class FliterDao {
 			Cursor c = db.rawQuery("select * from " + FliterDBInfo.tableName +" order by " + FliterDBInfo.column_name_id + " desc;", null);
 			while(c.moveToNext()) {
 				int id = c.getInt(c.getColumnIndex(FliterDBInfo.column_name_id));
-				String number = c.getString(c.getColumnIndex(FliterDBInfo.column_name_number));
+				String number = c.getString(c.getColumnIndex(FliterDBInfo.column_name_type));
 				String context = c.getString(c.getColumnIndex(FliterDBInfo.column_name_filterInfo));
 				
 				System.out.println(id + " | " + number + " | " + context);
@@ -44,16 +44,16 @@ public class FliterDao {
 		sb.append("insert into ");
 		sb.append(FliterDBInfo.tableName);
 		sb.append("(");
-		sb.append(FliterDBInfo.column_name_number + ",");
+		sb.append(FliterDBInfo.column_name_type + ",");
 		sb.append(FliterDBInfo.column_name_filterInfo);
 		sb.append(")values(?,?)");
-		db.execSQL(sb.toString(),new Object[]{ety.getNumber(), ety.getFilterInfo()});  
+		db.execSQL(sb.toString(),new Object[]{ety.getType(), ety.getFilterInfo()});  
 	}
 
 	public long selectCountByNumber(String number) {
 		try {
 			SQLiteDatabase db = dbhelper.getReadableDatabase();
-			String sql = "select count(1) from " + FliterDBInfo.tableName +" where " + FliterDBInfo.column_name_number + " = '" + number + "'";
+			String sql = "select count(1) from " + FliterDBInfo.tableName +" where " + FliterDBInfo.column_name_type + " = 0 and " + FliterDBInfo.column_name_filterInfo + " = '" + number + "'";
 			SQLiteStatement s = db.compileStatement(sql);
 			long c = s.simpleQueryForLong();
 			return c;

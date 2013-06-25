@@ -23,8 +23,9 @@ public class EMsmReceiver extends BroadcastReceiver {
 		if (action.equalsIgnoreCase("android.provider.Telephony.SMS_RECEIVED")) {
 			SmsMessage sms = getMessagesFromIntent(intent)[0];
 			String number = sms.getOriginatingAddress();
-			number = trimSmsNumber("+86", number); // °Ñ¹ú¼Ò´úÂëÈ¥³ıµô
+			number = trimSmsNumber("+86", number); // 
 			
+			//å·ç è¿‡æ»¤
 			long count = fliterDao.selectCountByNumber(number);
 			if(count > 0) {
 				FilterMessageEty ety = new FilterMessageEty();
@@ -33,8 +34,12 @@ public class EMsmReceiver extends BroadcastReceiver {
 				ety.setReceiveTime(new Date());
 				FilterMessageDao filterMessageService = new FilterMessageDao(context);
 				filterMessageService.insert(ety);
-				abortBroadcast(); //ÖĞ¶Ï¹ã²¥ºó£¬ÆäËûÒª½ÓÊÕ¶ÌĞÅµÄÓ¦ÓÃ¶¼Ã»·¨ÊÕµ½¶ÌĞÅ¹ã²¥ÁË
+				abortBroadcast(); //ä¸­æ–­äº†å¹¿æ’­çš„ç»§ç»­ä¼ é€’
 			}
+			
+			//å†…å®¹è¿‡æ»¤ï¼š
+			
+			
 		}
 	}
 
