@@ -62,16 +62,12 @@ public class MainActivity extends Activity {
 		};
 		filteredMsmList.setAdapter(filteredMsmAdapter);
 	}
-	
-	
 
 	@Override
 	protected void onResume() {
 		filteredMsmAdapter.changeCursor(filterMessageDao.getAllCursor());
 		super.onResume();
 	}
-
-
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -82,6 +78,26 @@ public class MainActivity extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+		case R.id.action_clear:
+			AlertDialog.Builder build = new Builder(this);
+			build.setTitle(getResources().getString(R.string.delete_confirm_title));
+			build.setMessage("确定删除所有拦截到的短信? ");
+			build.setPositiveButton(getResources().getString(R.string.confirm_ok), new OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					filterMessageDao.clear();
+					filteredMsmAdapter.changeCursor(filterMessageDao.getAllCursor());
+					dialog.dismiss();
+				}
+			});
+			build.setNegativeButton(getResources().getString(R.string.confirm_cancel), new OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+				}
+			});
+			build.create().show();
+			break;
 		case R.id.action_settings:
 			Intent intent = new Intent(this, FliterSettingAct.class);
 			startActivityForResult(intent, requestcode_setting);
@@ -118,8 +134,8 @@ public class MainActivity extends Activity {
 	public boolean onContextItemSelected(MenuItem item) {
 		AdapterView.AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
 		Cursor cursor = (Cursor) filteredMsmList.getAdapter().getItem(info.position);
-		final int id = cursor.getInt(cursor.getColumnIndex(FliterDBInfo.column_name_id));
-		final int title = cursor.getInt(cursor.getColumnIndex(FliterDBInfo.column_name_type));
+		final int id = cursor.getInt(cursor.getColumnIndex(MessageDBInfo.column_name_id));
+		final int title = cursor.getInt(cursor.getColumnIndex(MessageDBInfo.column_name_number));
 		
 		switch (item.getItemId()) {
 			case R.id.delete_fliter:

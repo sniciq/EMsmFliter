@@ -1,9 +1,13 @@
 package com.eddy.emsmfliter.db;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+import android.util.Log;
 
 public class FliterDao {
 	
@@ -17,14 +21,6 @@ public class FliterDao {
 		try {
 			SQLiteDatabase db = dbhelper.getReadableDatabase();
 			Cursor c = db.rawQuery("select * from " + FliterDBInfo.tableName +" order by " + FliterDBInfo.column_name_id + " desc;", null);
-			while(c.moveToNext()) {
-				int id = c.getInt(c.getColumnIndex(FliterDBInfo.column_name_id));
-				String number = c.getString(c.getColumnIndex(FliterDBInfo.column_name_type));
-				String context = c.getString(c.getColumnIndex(FliterDBInfo.column_name_filterInfo));
-				
-				System.out.println(id + " | " + number + " | " + context);
-			}
-			
 			return c;
 		}
 		catch(Exception e) {
@@ -63,5 +59,41 @@ public class FliterDao {
 			return 0;
 		}
 	}
-
+	
+	/**
+	 * 按类型得到所有的过滤器
+	 * @param type
+	 * @return
+	 */
+	public List<FliterEty> getAllFliterByType(int type) {
+		Cursor c = null;
+		try {
+			List<FliterEty> retList = new ArrayList<FliterEty>();
+			SQLiteDatabase db = dbhelper.getReadableDatabase();
+			String sql = "select * from " + FliterDBInfo.tableName +" where " + FliterDBInfo.column_name_type + "=" + type + " order by " + FliterDBInfo.column_name_id + " desc;";
+			c = db.rawQuery(sql, null);
+			
+			for(c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
+				int id = c.getInt(c.getColumnIndex(FliterDBInfo.column_name_id));
+				int ftype = c.getInt(c.getColumnIndex(FliterDBInfo.column_name_type));
+				String context = c.getString(c.getColumnIndex(FliterDBInfo.column_name_filterInfo));
+				
+				FliterEty ety = new FliterEty();
+				ety.setId(id);
+				ety.setType(ftype);
+				ety.setFilterInfo(context);
+				retList.add(ety);
+			}
+			return retList;
+		}
+		catch(Exception e) {
+			Log.i("FliterDao", e.getMessage(), e);
+			return null;
+		}
+		finally {
+			if(c != null) {
+				c.close();
+			}
+		}
+	}
 }

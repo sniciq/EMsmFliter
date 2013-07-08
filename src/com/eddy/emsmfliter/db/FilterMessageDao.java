@@ -16,18 +16,17 @@ public class FilterMessageDao {
 		try {
 			SQLiteDatabase db = dbhelper.getReadableDatabase();
 			Cursor c = db.rawQuery("select * from " + MessageDBInfo.tableName +" order by " + MessageDBInfo.column_name_receiveTime + " desc;", null);
-//			while(c.moveToNext()) {
-//				int id = c.getInt(c.getColumnIndex(MessageDBInfo.column_name_id));
-//				String number = c.getString(c.getColumnIndex(MessageDBInfo.column_name_number));
-//				String context = c.getString(c.getColumnIndex(MessageDBInfo.column_name_messageBody));
-//				long createDate = c.getLong(c.getColumnIndex(MessageDBInfo.column_name_receiveTime));
-//			}
 			return c;
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	public void clear() {
+		SQLiteDatabase db = dbhelper.getWritableDatabase(); 
+		db.execSQL("delete from " + MessageDBInfo.tableName + " where 1=1;");
 	}
 	
 	public void deleteById(int id) {

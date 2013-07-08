@@ -11,15 +11,15 @@ public class FliterEty {
 	public static final int type_content = 1;//内容
 	public final static String[] Type_Array = {"号码", "内容"};
 	
-	private String id;
+	private Integer id;
 	private Integer type;
 	private String filterInfo;
 	
 	
-	public String getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	
@@ -51,9 +51,18 @@ public class FliterEty {
 		return convertType(this.type);
 	}
 	
+	/**
+	 * 0: 号码，1：内容
+	 * @return
+	 */
 	public Integer getType() {
 		return type;
 	}
+	
+	/**
+	 * 0: 号码，1：内容
+	 * @param type
+	 */
 	public void setType(Integer type) {
 		this.type = type;
 	}
